@@ -9,34 +9,67 @@ namespace HomeHUD
 {
     class Data
     {
-        private Dictionary<string,Events> events;
-        private CalendarAPI cAPI;
+        private Dictionary<string, Profile> profiles;
+        private CalendarAPI api;
 
-        public Data(string initCalendarID)
+        public Data()
         {
-            cAPI = new CalendarAPI();
-            events = new Dictionary<string, Events>()
+            api = new CalendarAPI();
+            profiles = new Dictionary<string, Profile>()
             {
-                { "lhrt0f53jorerki95thp3ag6cg@group.calendar.google.com", cAPI.GetCalendar("lhrt0f53jorerki95thp3ag6cg@group.calendar.google.com")}
+                // Replace with loading from json
+                {"Cody's Calendar", new Profile("Cody's Profile", "lhrt0f53jorerki95thp3ag6cg@group.calendar.google.com")},
+                {"Brenna's Calendar", new Profile("Brenna's Calendar", "brenna.carnahan@gmail.com")}
             };
 
+            // sync calendars here
+            SyncCalendar();
         }
 
-        public void updateCalendars()
+        public void SyncCalendar()
         {
-            if(events != null && events.Count > 0)
+            if(profiles != null && profiles.Count > 0)
             {
-                var keys = new List<string>(events.Keys);
+                var keys = new List<string>(profiles.Keys);
                 foreach(var k in keys)
                 {
-                    events[k] = cAPI.GetCalendar(k);
+                    profiles[k].Events = api.GetCalendar(profiles[k].CalendarID);
                 }
             }
             else
             {
                 Console.WriteLine("No Avaliable Calendars to Update.");
             }
-
+        }
+        public void DisplayCalendars()
+        {
+            if (profiles != null && profiles.Count > 0)
+            {
+                var keys = new List<string>(profiles.Keys);
+                foreach (var k in keys)
+                {
+                    if (profiles != null && profiles.Count > 0)
+                    {
+                        foreach (var eventItem in profiles[k].Events.Items)
+                        {
+                            string when = eventItem.Start.DateTime.ToString();
+                            if (String.IsNullOrEmpty(when))
+                            {
+                                when = eventItem.Start.Date;
+                            }
+                            Console.WriteLine("{0} ({1})", eventItem.Summary, when);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No Events on this Calendar.");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Avaliable Calendars to Update.");
+            }
         }
     }
 }

@@ -17,8 +17,9 @@ namespace HomeHUD
     {
         static void Main(string[] args)
         {
-            Data d = new Data("lhrt0f53jorerki95thp3ag6cg@group.calendar.google.com");
-            d.updateCalendars();
+            Data d = new Data();
+            d.DisplayCalendars();
+            Console.ReadKey();
         }
     }
 }
