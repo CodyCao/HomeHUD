@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Google.Apis.Calendar.v3.Data;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace HomeHUD
 {
@@ -11,22 +13,24 @@ namespace HomeHUD
     {
         private Dictionary<string, Profile> profiles;
         private CalendarAPI api;
-
+        
         public Data()
         {
+            profiles = ProfileConfigLoad("../../DataConfig.json");
             api = new CalendarAPI();
-            profiles = new Dictionary<string, Profile>()
-            {
-                // Replace with loading from json
-                {"Cody's Calendar", new Profile("Cody's Profile", "lhrt0f53jorerki95thp3ag6cg@group.calendar.google.com")},
-                {"Brenna's Calendar", new Profile("Brenna's Calendar", "brenna.carnahan@gmail.com")}
-            };
-
-            // sync calendars here
-            SyncCalendar();
+            SyncCalendars();
         }
 
-        public void SyncCalendar()
+        public static Dictionary<string, Profile> ProfileConfigLoad(string filename)
+        {
+            using (StreamReader r = new StreamReader(filename))
+            {
+                string json = r.ReadToEnd();
+                Dictionary<string, Profile> jProfile = JsonConvert.DeserializeObject<Dictionary<string,Profile>>(json);
+                return jProfile;
+            }
+        }
+        public void SyncCalendars()
         {
             if(profiles != null && profiles.Count > 0)
             {
