@@ -17,9 +17,7 @@ namespace HomeHUD
     {
         static void Main(string[] args)
         {
-            Data d = new Data();
-            d.DisplayCalendars();
-            Console.ReadKey();
+            HUD h = new HUD();
         }
     }
 }

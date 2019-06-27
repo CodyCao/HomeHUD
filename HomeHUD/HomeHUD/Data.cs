@@ -52,14 +52,20 @@ namespace HomeHUD
                 var keys = new List<string>(profiles.Keys);
                 foreach (var k in keys)
                 {
+                    Console.WriteLine(k);
                     if (profiles != null && profiles.Count > 0)
                     {
                         foreach (var eventItem in profiles[k].Events.Items)
                         {
                             string when = eventItem.Start.DateTime.ToString();
+                            
                             if (String.IsNullOrEmpty(when))
                             {
-                                when = eventItem.Start.Date;
+                                when = eventItem.Start.Date.ToString();
+                            }
+                            else
+                            {
+                                when = eventItem.Start.DateTime.ToString() + " - " + eventItem.End.DateTime.ToString();
                             }
                             Console.WriteLine("{0} ({1})", eventItem.Summary, when);
                         }

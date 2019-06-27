@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="CalendarAPI.cs" />
     <Compile Include="Data.cs" />
+    <Compile Include="HUD.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
